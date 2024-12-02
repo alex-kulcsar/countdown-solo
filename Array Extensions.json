@@ -1,0 +1,8 @@
+{
+  "README.md": " ",
+  "assets.json": "",
+  "custom.ts": "namespace Array {\n    //% block=\"shuffle array $arr\"\n    //% hidden group=\"Operations\"\n    export function shuffleArray(arr: any[]): void {\n        shuffle(arr)\n    }\n    \n    export function shuffle<T>(arr: T[]): void {\n        const h: number = arr.length - 1\n        for (let i: number = 0; i <= h; i++) {\n            let swap_i: number = randint(0, h)\n            if (i != swap_i) {\n                let t: T = arr[i]\n                arr[i] = arr[swap_i]\n                arr[swap_i] = t\n            }\n        }\n    }\n}",
+  "main.blocks": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"pxt-on-start\" x=\"0\" y=\"0\"></block></xml>",
+  "main.ts": "\n",
+  "pxt.json": "{\n    \"name\": \"Array Extensions\",\n    \"description\": \"\",\n    \"dependencies\": {\n        \"device\": \"*\"\n    },\n    \"files\": [\n        \"main.blocks\",\n        \"main.ts\",\n        \"README.md\",\n        \"assets.json\",\n        \"custom.ts\"\n    ],\n    \"targetVersions\": {\n        \"branch\": \"v1.12.57\",\n        \"tag\": \"v1.12.57\",\n        \"commits\": \"https://github.com/microsoft/pxt-arcade/commits/50c17cec0d73d32911acd1633e6ce81b85ed2c3a\",\n        \"target\": \"1.12.57\",\n        \"pxt\": \"8.5.68\"\n    },\n    \"preferredEditor\": \"tsprj\"\n}\n"
+}
