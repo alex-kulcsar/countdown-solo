@@ -54,8 +54,8 @@ namespace Countdown {
         currConsonant = 0
         vowels = buildLetters(VOWEL_DISTRIBUTION)
         currVowel = 0
-        if (WordLists.words2 == null) {
-            WordLists.buildWordSetsInBackground()
+        if (!WordLists.isReady()) {
+            WordLists.buildWordSets()
         }
     }
 

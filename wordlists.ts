@@ -15912,27 +15912,114 @@ namespace WordLists {
     }
 
     export function buildWordSets(): void {
-        words2 = TernaryStringSet.fromB64StringSet(WORDS2)
-        words2.forceUpper = true
-        words3 = TernaryStringSet.fromB64StringSet(WORDS3)
-        words3.forceUpper = true
-        words4 = TernaryStringSet.fromB64StringSet(WORDS4)
-        words4.forceUpper = true
-        words5 = TernaryStringSet.fromB64StringSet(WORDS5)
-        words5.forceUpper = true
-        words6 = TernaryStringSet.fromB64StringSet(WORDS6)
-        words6.forceUpper = true
-        words7 = TernaryStringSet.fromB64StringSet(WORDS7)
-        words7.forceUpper = true
-        words8 = TernaryStringSet.fromB64StringSet(WORDS8)
-        words8.forceUpper = true
+        currBuild = 9
         words9 = TernaryStringSet.fromB64StringSet(WORDS9)
         words9.forceUpper = true
+        currBuild = 8
+        words8 = TernaryStringSet.fromB64StringSet(WORDS8)
+        words8.forceUpper = true
+        currBuild = 7
+        words7 = TernaryStringSet.fromB64StringSet(WORDS7)
+        words7.forceUpper = true
+        currBuild = 6
+        words6 = TernaryStringSet.fromB64StringSet(WORDS6)
+        words6.forceUpper = true
+        currBuild = 5
+        words5 = TernaryStringSet.fromB64StringSet(WORDS5)
+        words5.forceUpper = true
+        currBuild = 4
+        words4 = TernaryStringSet.fromB64StringSet(WORDS4)
+        words4.forceUpper = true
+        currBuild = 3
+        words3 = TernaryStringSet.fromB64StringSet(WORDS3)
+        words3.forceUpper = true
+        currBuild = 2
+        words2 = TernaryStringSet.fromB64StringSet(WORDS2)
+        words2.forceUpper = true
         ready = true
     }
 
-    export function buildWordSetsInBackground(): void {
-        timer.background(buildWordSets)
+    /**
+     * Build incrementally.
+     */
+
+    interface WordListBuild {
+        wordSet: TernaryStringSet
+        stringSet: string[]
+    }
+
+    let currBuild: number = 0
+    let building: boolean = false
+
+    export function currentBuild(): number {
+        return currBuild
+    }
+
+    export function isBuilding(): boolean {
+        return building
+    }
+
+    export function buildNextWordSet(): void {
+        if (ready) { return }
+        if (building) { return }
+        building = true
+        timer.after(100, runNextBuild)
+    }
+
+    function runNextBuild(): void {
+        building = true
+        // console.log(`Building word set ${currBuild}.`)
+        switch (currBuild) {
+            case 9:
+                words9 = TernaryStringSet.fromB64StringSet(WORDS9)
+                words9.forceUpper = true
+                break
+
+            case 8:
+                words8 = TernaryStringSet.fromB64StringSet(WORDS8)
+                words8.forceUpper = true
+                break
+
+            case 7:
+                words7 = TernaryStringSet.fromB64StringSet(WORDS7)
+                words7.forceUpper = true
+                break
+
+            case 6:
+                words6 = TernaryStringSet.fromB64StringSet(WORDS6)
+                words6.forceUpper = true
+                break
+
+            case 5:
+                words5 = TernaryStringSet.fromB64StringSet(WORDS5)
+                words5.forceUpper = true
+                break
+
+            case 4:
+                words4 = TernaryStringSet.fromB64StringSet(WORDS4)
+                words4.forceUpper = true
+                break
+
+            case 3:
+                words3 = TernaryStringSet.fromB64StringSet(WORDS3)
+                words3.forceUpper = true
+                break
+
+            case 2:
+                words2 = TernaryStringSet.fromB64StringSet(WORDS2)
+                words2.forceUpper = true
+                break
+        }
+        currBuild--
+        if (currBuild < 2) {
+            ready = true
+        }
+        building = false
+    }
+
+    export function startBuildingWordSets(): void {
+        currBuild = 9
+        ready = false
     }
 
     //% block="get arrangements of characters $w from word set $s"

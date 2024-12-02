@@ -342,6 +342,8 @@ function solveConundrum(): void {
  * Variables and functions for title, selection, and waiting screens.
  */
 
+let currBuildSprite: TextSprite
+
 function setupScreen(): void {
     gameMode = SpriteKind.Setup
     let ts: TextSprite
@@ -357,7 +359,11 @@ function setupScreen(): void {
     ts = textsprite.create("Please wait....")
     ts.setPosition(80, 60)
     ts.setKind(gameMode)
-    WordLists.buildWordSetsInBackground()
+
+    WordLists.startBuildingWordSets()
+    currBuildSprite = textsprite.create(WordLists.currentBuild().toString())
+    currBuildSprite.setPosition(80, 100)
+    currBuildSprite.setKind(gameMode)
 }
 
 function showTitleScreen(): void {
@@ -454,6 +460,9 @@ game.onUpdate(() => {
         case SpriteKind.Setup:
             if (WordLists.isReady()) {
                 showTitleScreen()
+            } else if (!WordLists.isBuilding()) {
+                currBuildSprite.setText(WordLists.currentBuild().toString())
+                WordLists.buildNextWordSet()
             }
             break
 
