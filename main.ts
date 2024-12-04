@@ -125,7 +125,7 @@ function endLettersRound(): void {
     if (currentLetterSolution.length > 0) {
         answerText = currentLetterSolution
         answerSprite.fg = 5 // yellow
-        answerSprite.update()
+        updateAnswerSprite()
     }
     instructionsSprite.setText("")
     showWaiting()
