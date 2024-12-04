@@ -17,6 +17,7 @@ const COUNTDOWN_SPRITE_KINDS: number[] = [
     SpriteKind.EnteringWord,
     SpriteKind.WordWaiting,
     SpriteKind.NumbersRound,
+    SpriteKind.EnteringNumbers,
     SpriteKind.ConundrumRound,
     SpriteKind.Waiting,
 ]
