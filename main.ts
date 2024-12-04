@@ -169,7 +169,11 @@ function startEnteringWord(): void {
             5  // foreground = yellow
         )
         doneButton.setBorder(1, 6 /* dark cyan */, 2)
-        doneButton.setPosition(80, 75)
+        if (conundrumSolnTiles.length > 0) {
+            doneButton.setPosition(80, 45)
+        } else {
+            doneButton.setPosition(80, 75)
+        }
         doneButton.setKind(gameMode)
     }
     if (answerSprite == null) {
@@ -183,7 +187,9 @@ function startEnteringWord(): void {
     }
     answerSprite.fg = 1 // white
     updateAnswerSprite()
-    instructionsSprite.setText("")
+    if (instructionsSprite != null) {
+        instructionsSprite.setText("")
+    }
 }
 
 function highlightLetter(index: number, highlightOn: boolean): void {
@@ -234,21 +240,30 @@ function updateAnswerSprite(): void {
 }
 
 function verifyWord(): void {
-    if (answerText.length > 2 && Countdown.isWordValid(answerText)) {
-        info.setScore(answerText.length)
-        answerSprite.fg = 7 // green
-        music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
+    if (conundrumSolnTiles.length == 0) {
+        if (answerText.length > 2 && Countdown.isWordValid(answerText)) {
+            info.setScore(answerText.length)
+            answerSprite.fg = 7 // green
+            music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.UntilDone)
+        } else {
+            answerSprite.fg = 2 // red
+            music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+        }
+        answerSprite.update()
+        doneButton.borderColor = 6 // dark cyan
+        doneButton.update()
+        instructionsSprite.setText("A=New round B=Enter word")
+        instructionsSprite.x = 80
+        instructionsSprite.update()
+        gameMode = SpriteKind.WordWaiting
     } else {
-        answerSprite.fg = 2 // red
-        music.play(music.melodyPlayable(music.buzzer), music.PlaybackMode.UntilDone)
+        if (answerText.length == 9 && Countdown.isWordValid(answerText)) {
+            music.play(music.melodyPlayable(music.powerUp), music.PlaybackMode.UntilDone)
+        } else {
+            music.play(music.melodyPlayable(music.wawawawaa), music.PlaybackMode.UntilDone)
+        }
+        endConundrum()
     }
-    answerSprite.update()
-    doneButton.borderColor = 6 // dark cyan
-    doneButton.update()
-    instructionsSprite.setText("A=New round B=Enter word")
-    instructionsSprite.x = 80
-    instructionsSprite.update()
-    gameMode = SpriteKind.WordWaiting
 }
 
 /**
@@ -621,6 +636,7 @@ let conundrumSolnTiles: TextSprite[] = []
 function beginConundrum() {
     gameMode = SpriteKind.ConundrumRound
     resetScreen()
+    letterTiles = []
     conundrumSolnTiles = []
     conundrum = Countdown.generateConundrum()
     let x: number = 8
@@ -635,6 +651,7 @@ function beginConundrum() {
         t.setMaxFontHeight(10)
         t.setPosition(x, y)
         t.setKind(gameMode)
+        letterTiles.push(t)
 
         t = textsprite.create(" ",
             8, // background = blue
@@ -829,7 +846,8 @@ info.onCountdownEnd(function () {
         // endNumbersRound()
         startEnteringNumbers()
     } else if (gameMode == SpriteKind.ConundrumRound) {
-        endConundrum()
+        // endConundrum()
+        startEnteringWord()
     }
 })
 
