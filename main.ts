@@ -431,6 +431,7 @@ function startEnteringNumbers(): void {
     answerText = ""
     answerSprite.fg = 1 // white
     answerSprite.y = 45
+    answerSprite.setKind(gameMode)
     updateAnswerSprite()
     currOperation = {
         lhs: -1,
