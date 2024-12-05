@@ -672,6 +672,7 @@ function endConundrum(): void {
     for (let i: number = 0; i < conundrumSolution.length; i++) {
         conundrumSolnTiles[i].setText(conundrumSolution[i])
     }
+    conundrumSolnTiles = []
     showWaiting()
 }
 
